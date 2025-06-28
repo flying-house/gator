@@ -1,12 +1,37 @@
 package config
 
-// Config gets... config?
+import (
+	"encoding/json"
+	"os"
+)
+
+const cfgFileName = ".gatorconfig.json"
+
+// Config probably does something
 type Config struct {
 	dbURL           string
 	currentUserName string
 }
 
-// SetUser sets the user in the config file????
+// Read passes cfg (struct) from homedir file
+func Read() (Config, error) {
+	var cfg Config
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return cfg, err
+	}
+	fileContent, err := os.ReadFile(homeDir + cfgFileName)
+	if err != nil {
+		return cfg, err
+	}
+	err = json.Unmarshal(fileContent, &cfg)
+	if err != nil {
+		return cfg, err
+	}
+	return cfg, nil
+}
+
+// SetUser -
 func (c Config) SetUser() string {
 	return ""
 }
