@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 )
 
@@ -16,19 +15,18 @@ type Config struct {
 
 // Read also does something
 func Read() (Config, error) {
-	var cfg Config
+	cfg := Config{}
 	path, err := getConfigPath()
 	if err != nil {
-		return cfg, err
+		return Config{}, err
 	}
-	fmt.Println("Read call on:", path)
 	fileContent, err := os.ReadFile(path)
 	if err != nil {
-		return cfg, err
+		return Config{}, err
 	}
 	err = json.Unmarshal(fileContent, &cfg)
 	if err != nil {
-		return cfg, err
+		return Config{}, err
 	}
 
 	return cfg, nil
